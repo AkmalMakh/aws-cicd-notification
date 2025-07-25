@@ -11,14 +11,13 @@ phases:
       - echo "Installing dependencies"
       - cd uploads_notification
       - if [ -f requirements.txt ]; then pip install -r requirements.txt -t .; fi
-      - cd ..
   build:
     commands:
       - echo "Running sam build"
-      - sam build --template-file uploads_notification/template.yaml
+      - cd uploads_notification 
+      - sam build
       - echo "Running sam package"
-      - sam package --template-file uploads_notification/template.yaml --s3-bucket akmal-makhmudov-bucket --output-template-file packaged.yaml
-
+      - sam package --s3-bucket akmal-makhmudov-bucket --output-template-file ../packaged.yaml
 artifacts:
   files:
     - packaged.yaml
