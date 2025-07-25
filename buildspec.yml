@@ -18,7 +18,7 @@ phases:
       - sam build
       - echo "Running sam package"
       - sam package \
-          --s3-bucket YOUR_ARTIFACT_BUCKET \
+          --s3-bucket akmal-makhmudov-bucket \
           --output-template-file packaged.yaml
 artifacts:
   files:
