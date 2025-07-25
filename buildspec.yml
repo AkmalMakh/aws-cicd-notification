@@ -1,0 +1,25 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.12
+    commands:
+      - pip install aws-sam-cli
+  pre_build:
+    commands:
+      - echo "Installing dependencies"
+      - cd uploads_notification
+      - if [ -f requirements.txt ]; then pip install -r requirements.txt -t .; fi
+      - cd ..
+  build:
+    commands:
+      - echo "Running sam build"
+      - sam build
+      - echo "Running sam package"
+      - sam package \
+          --s3-bucket YOUR_ARTIFACT_BUCKET \
+          --output-template-file packaged.yaml
+artifacts:
+  files:
+    - packaged.yaml
