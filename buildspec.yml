@@ -15,11 +15,10 @@ phases:
   build:
     commands:
       - echo "Running sam build"
-      - sam build
+      - sam build --template-file uploads_notification/template.yaml
       - echo "Running sam package"
-      - sam package \
-          --s3-bucket akmal-makhmudov-bucket \
-          --output-template-file packaged.yaml
+      - sam package --template-file uploads_notification/template.yaml --s3-bucket akmal-makhmudov-bucket --output-template-file packaged.yaml
+
 artifacts:
   files:
     - packaged.yaml
