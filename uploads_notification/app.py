@@ -23,7 +23,7 @@ def lambda_handler(event, context):
             sns.publish(
                 TopicArn=TOPIC_ARN,
                 Message=message,
-                Subject="New Upload Notification"
+                Subject="New Upload Notifications"
             )
             print("✅ Message published to SNS")
 
