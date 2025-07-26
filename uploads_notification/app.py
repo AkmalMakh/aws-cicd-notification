@@ -10,7 +10,7 @@ def lambda_handler(event, context):
 
     records = event.get('Records', [])
     if not records:
-        print("No records to process.")
+        print("No records to found.")
         return {'statusCode': 200, 'body': 'No records'}
 
     for record in records:
