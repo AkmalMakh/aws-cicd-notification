@@ -54,3 +54,20 @@ Resources:
         - Name: FunctionName
           Value: !Ref UploadsNotificationFunction
 
+  PreTrafficHook:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: PreTrafficHookFunction
+      Handler: pre_traffic.lambda_handler
+      Runtime: python3.12
+      CodeUri: hooks/
+      Timeout: 5
+
+  PostTrafficHook:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: PostTrafficHookFunction
+      Handler: post_traffic.lambda_handler
+      Runtime: python3.12
+      CodeUri: hooks/
+      Timeout: 5
