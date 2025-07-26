@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: SAM app for image upload notification
+Description: SAM app for image upload notification with Blue/Green deployment
 
 Resources:
   UploadsNotificationFunction:
@@ -10,6 +10,7 @@ Resources:
       CodeUri: .
       Handler: app.lambda_handler
       Runtime: python3.12
+      AutoPublishAlias: live  # ✅ Required for traffic shifting
       Environment:
         Variables:
           TOPIC_ARN: !Ref NotificationTopic
@@ -24,9 +25,57 @@ Resources:
         - SQSPollerPolicy:
             QueueName: !GetAtt UploadQueue.QueueName
         - CloudWatchPutMetricPolicy: {}
+      DeploymentPreference:
+        Type: Linear10PercentEvery1Minute  # ✅ Traffic shifting strategy
+        Alarms:
+          - !Ref UploadsNotificationErrorAlarm
+        Hooks:
+          PreTraffic: !Ref PreTrafficHook
+          PostTraffic: !Ref PostTrafficHook
 
   NotificationTopic:
     Type: AWS::SNS::Topic
 
   UploadQueue:
     Type: AWS::SQS::Queue
+
+  UploadsNotificationErrorAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: UploadsNotificationErrors
+      MetricName: Errors
+      Namespace: AWS/Lambda
+      Statistic: Sum
+      Period: 60
+      EvaluationPeriods: 1
+      Threshold: 1
+      ComparisonOperator: GreaterThanThreshold
+      Dimensions:
+        - Name: FunctionName
+          Value: !Ref UploadsNotificationFunction
+
+  PreTrafficHook:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: PreTrafficValidationHook
+      Handler: pre_traffic.lambda_handler
+      Runtime: python3.12
+      InlineCode: |
+        def lambda_handler(event, context):
+            print("✅ PreTraffic hook ran")
+            return {"status": "Succeeded"}
+      MemorySize: 128
+      Timeout: 3
+
+  PostTrafficHook:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: PostTrafficValidationHook
+      Handler: post_traffic.lambda_handler
+      Runtime: python3.12
+      InlineCode: |
+        def lambda_handler(event, context):
+            print("✅ PostTraffic hook ran")
+            return {"status": "Succeeded"}
+      MemorySize: 128
+      Timeout: 3
