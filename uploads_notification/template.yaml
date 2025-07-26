@@ -54,28 +54,3 @@ Resources:
         - Name: FunctionName
           Value: !Ref UploadsNotificationFunction
 
-  PreTrafficHook:
-    Type: AWS::Serverless::Function
-    Properties:
-      FunctionName: PreTrafficValidationHook
-      Handler: pre_traffic.lambda_handler
-      Runtime: python3.12
-      InlineCode: |
-        def lambda_handler(event, context):
-            print("✅ PreTraffic hook ran")
-            return {"status": "Succeeded"}
-      MemorySize: 128
-      Timeout: 3
-
-  PostTrafficHook:
-    Type: AWS::Serverless::Function
-    Properties:
-      FunctionName: PostTrafficValidationHook
-      Handler: post_traffic.lambda_handler
-      Runtime: python3.12
-      InlineCode: |
-        def lambda_handler(event, context):
-            print("✅ PostTraffic hook ran")
-            return {"status": "Succeeded"}
-      MemorySize: 128
-      Timeout: 3
