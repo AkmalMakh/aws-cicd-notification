@@ -18,7 +18,7 @@ def lambda_handler(event, context):
             body = json.loads(record['body'])
             image_url = body.get('downloadUrl', 'No URL found')
 
-            message = f"A image was uploaded successfully \n\nURL: {image_url}"
+            message = f"A image was uploaded  \n\nURL: {image_url}"
 
             sns.publish(
                 TopicArn=TOPIC_ARN,
