@@ -28,7 +28,7 @@ def lambda_handler(event, context):
             print("✅ Message published to SNS check your email")
 
         except Exception as e:
-            print("❌ Error processing record:", str(e))
+            print("❌ Error processing records:", str(e))
 
     return {
         'statusCode': 200,
