@@ -25,7 +25,7 @@ def lambda_handler(event, context):
                 Message=message,
                 Subject="New Upload Notifications"
             )
-            print("✅ Message published to SNS check it")
+            print("✅ Message published to SNS check your email")
 
         except Exception as e:
             print("❌ Error processing record:", str(e))
