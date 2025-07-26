@@ -6,11 +6,11 @@ sns = boto3.client('sns')
 TOPIC_ARN = os.environ['TOPIC_ARN']
 
 def lambda_handler(event, context):
-    print("🔍 Incoming event:", json.dumps(event))
+    print("Incoming event:", json.dumps(event))
 
     records = event.get('Records', [])
     if not records:
-        print("⚠️ No records to process.")
+        print("No records to process.")
         return {'statusCode': 200, 'body': 'No records'}
 
     for record in records:
