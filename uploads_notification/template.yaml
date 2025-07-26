@@ -7,7 +7,7 @@ Resources:
     Type: AWS::Serverless::Function
     Properties:
       FunctionName: Akmalkhon-UploadsNotificationFunction
-      CodeUri: uploads_notification
+      CodeUri: .
       Handler: app.lambda_handler
       Runtime: python3.12
       Environment:
