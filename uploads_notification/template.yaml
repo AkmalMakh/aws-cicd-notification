@@ -62,6 +62,14 @@ Resources:
       Runtime: python3.12
       CodeUri: hooks/
       Timeout: 5
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - logs:CreateLogGroup
+                - logs:CreateLogStream
+                - logs:PutLogEvents
+              Resource: "*"
 
   PostTrafficHook:
     Type: AWS::Serverless::Function
@@ -71,3 +79,12 @@ Resources:
       Runtime: python3.12
       CodeUri: hooks/
       Timeout: 5
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - logs:CreateLogGroup
+                - logs:CreateLogStream
+                - logs:PutLogEvents
+              Resource: "*"
+
